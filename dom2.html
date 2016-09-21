@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div id="box">
+		<input type="button" id="btn3" value="按钮3">
+		<a href="event.html" id="go">跳转</a>
+	</div>
+	<script type="text/javascript">
+		function showMes(){
+			alert("asdfasdf");
+		}
+		var aaa=document.getElementById("btn3");
+		var go=document.getElementById("go");
+		function stopGo(event){
+			event.stopPropagation();
+			event.preventDefault();
+		}
+		// go.[click]=stopGo(event);
+		//<a>在这里不能用HTML事件处理程序
+	// btn3.addEventListener("click",showMes,false);
+	// //添加事件
+	// btn3.addEventListener("click",function(){
+	// 	alert(this.value)
+	// },false);
+
+	// btn3.removeEventListener("click",showMes,false);
+	//删除事件
+
+	var eventUtil={
+		//添加句柄
+		addHandler:function(element,type,handler){
+			if(element.addEventListener){
+				element.addEventListener(type,handler,false);
+			}else if(element.attachEvent){
+				element.attachEvent("on"+type,handler);
+			}else{
+				element['on'+type]=handler;
+			}
+		},
+
+		removeHandler:function(element,type,handler){
+			if(element.removeEventListener){
+				element.removeEventListener(type,handler,false);
+			}else if(element.detachEvent){
+				element.detachEvent("on"+type,handler);
+			}else{
+				element['on'+type]=null;
+			}
+		}
+	}
+	var box=document.getElementById("box");
+	// eventUtil.addHandler(box,'click',showMes);
+	eventUtil.addHandler(go,'click',stopGo);
+	//<a>在这里只能用DOM2级事件处理程序
+	// eventUtil.addHandler(btn3,'click',showMes);
+</script>
+</body>
+</html>
